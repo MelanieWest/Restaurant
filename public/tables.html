@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang= "en">
+    <head>
+        <meta charset = "UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Table Lists</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery.js"></script>
+    </head>
+    <body>
+        <div class="jumbotron">
+            <h1 class="display-3">Reservation & Wait Lists</h1>
+            <hr class="my-4">
+                <p> Where to go from here? </p>
+                    <p class="lead">
+                      <a class="btn btn-danger btn-lg" href="/form" role="button" id="make-rez">Make Reservtion</a>
+                      <a class="btn btn-info btn-lg" href="/" role="button" id="home">Home</a>
+                    </p>
+                  </div>
+        <div class="container">
+            <div id="resDataDisplay">
+                <h2>Reservation List</h2>
+                <!-- <ol>
+                    <li>test</li>
+                    <li>test</li>
+                    <li>test</li>
+                </ol> -->
+            </div>
+            <br>
+            <div id="waitDataDisplay">
+                <h2>Wait List</h2>
+                <!-- <ol>
+                    <li>test</li>
+                    <li>test</li>
+                    <li>test</li>
+                </ol> -->
+            </div>
+        </div>
+        <footer>
+            <p><a href="/api/tables">API Table Link</a> | <a href="/api/wait">API Wait List</a></p>
+        </footer>
+    <script type="text/javascript">
+
+    // this code accesses the reservation / waitlist data and display it.  Use an ajax request
+
+    var currentUrl = window.location.origin;
+
+    $.ajax({url: currentUrl+"/api/tables", method: "GET"})
+    .done(function(tableData){
+        // Loop through and display each of the customers
+        for (var i = 0; i < tableData.length; i++) {
+        
+            // Create the HTML Well (Section) and Add the table content for each reserved table
+            var tableSection = $("<div>");
+            tableSection.addClass("well");
+            tableSection.attr("id", "tableWell-" + i + 1);
+            $("#resDataDisplay").append(tableSection);
+
+            var tableNumber = i + 1;
+
+
+            // Then display the remaining fields in the HTML (Section Name, Date, URL)
+            $("#tableWell-" + i + 1).append("<h2><span class='label label-primary'>" + tableNumber + "</span> | " + tableData[i].name + "</h2>");
+        }
+    })
+
+//currently not working
+    $.ajax({url: currentUrl+"/api/wait", method: "GET"})
+    .done(function(data){
+        for (var i=0; i<data.length; i++){
+            var waitDiv = $("<div>");
+            $(waitDiv).append(data.name); 
+        }
+        $("#waitDataDisplay").append(waitDiv);        
+    })
+
+    </script>
+    </body>
+</html>
